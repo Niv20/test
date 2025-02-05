@@ -1,0 +1,364 @@
+@import url("https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap");
+
+* {
+  box-sizing: border-box;
+  font-family: "Assistant", sans-serif; /* הוספת הפונט לכל האלמנטים */
+}
+
+body {
+  font-family: "Assistant", sans-serif !important; /* שינוי הפונט הראשי */
+  direction: rtl;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f4f4f9;
+  overflow: hidden;
+}
+
+#canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.container {
+  width: 90%;
+  max-width: 600px;
+  background: #ffffff;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 2;
+}
+
+.center-content {
+  text-align: center;
+}
+
+h1 {
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+
+.btn-container {
+  display: flex;
+  flex-direction: column;
+}
+
+button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.hidden {
+  display: none;
+}
+
+.answer-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.answer-btn:hover {
+  background-color: #0056b3;
+}
+
+.answer-btn.correct {
+  background-color: #28a745;
+  color: white;
+  animation: pulse 0.5s;
+}
+
+.answer-btn.wrong {
+  background-color: #dc3545;
+  color: white;
+  animation: shake 0.5s;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+.answer-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.8; /* מראה את הכפתור כלא פעיל */
+}
+
+#score-display {
+  font-size: 1.5em;
+  margin: 20px 0;
+}
+
+#question-container {
+  text-align: center;
+  transition: all 0.5s ease-in-out;
+}
+
+#explanation {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 0.5s ease-in-out;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  margin-top: 20px;
+  padding: 0 15px;
+}
+
+#explanation.show {
+  max-height: 300px;
+  opacity: 1;
+  padding: 15px;
+  transition-delay: 0.7s; /* שנייה השהייה בכניסה */
+}
+
+#explanation h3 {
+  margin-top: 0;
+}
+
+#explanation-text {
+  line-height: 1.5;
+}
+
+#timer-container {
+  position: relative;
+  height: 0;
+  text-align: center;
+}
+
+.timer {
+  position: absolute;
+  top: -28px; /* העלה את הערך כדי להזיז גבוה יותר */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 50px;
+  height: 50px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5em;
+  font-weight: bold;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: color 0.3s ease;
+}
+
+.timer.warning {
+  color: red;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.timer.hidden {
+  display: none;
+}
+
+/* עיצוב כפתור מצב לילה */
+#dark-mode-toggle {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 3;
+}
+
+/* סגנון מצב כהה */
+body.dark-mode {
+  background-color: #1a1a1a;
+  color: #f4f4f9;
+}
+
+body.dark-mode .container {
+  background-color: #333;
+  color: #f4f4f9;
+}
+
+body.dark-mode button {
+  background-color: #555;
+  color: #f4f4f9;
+}
+
+body.dark-mode button:hover {
+  background-color: #777;
+}
+
+body.dark-mode #explanation {
+  background-color: #444;
+  color: #f4f4f9;
+}
+
+/* מניעת שינוי צבע במעבר עכבר על כפתורים במצב correct או wrong */
+.answer-btn.correct:hover {
+  background-color: #28a745; /* שמירה על צבע ירוק */
+}
+
+.answer-btn.wrong:hover {
+  background-color: #dc3545; /* שמירה על צבע אדום */
+}
+
+/* צבע רקע לעיגול הטיימר במצב כהה */
+body.dark-mode .timer {
+  background-color: #555;
+  color: #f4f4f9;
+}
+
+/* עיצוב שכבת הכיסוי */
+#dark-mode-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0); /* השקיפות ההתחלתית */
+  z-index: 2;
+  pointer-events: none; /* מניעת אינטראקציה */
+}
+
+/* צבע שכבת הכיסוי במצב כהה */
+body.dark-mode #dark-mode-overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* צבע כהה עם שקיפות */
+}
+
+/* צבע שכבת הכיסוי במצב בהיר */
+body:not(.dark-mode) #dark-mode-overlay {
+  background-color: rgba(255, 255, 255, 0.5); /* צבע בהיר עם שקיפות */
+}
+
+#progress-bar {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+#progress-track {
+  display: flex;
+  gap: 8px;
+  padding: 0 10px;
+}
+
+.progress-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ddd;
+  transition: all 0.3s ease;
+}
+
+.progress-dot.current {
+  background-color: #007bff;
+  transform: scale(1.4); /* שיניתי מ-1.2 ל-1.4 */
+  animation: dotPulse 1s infinite; /* הוספת אנימציה */
+}
+
+.progress-dot.correct {
+  background-color: #28a745;
+}
+
+.progress-dot.wrong {
+  background-color: #dc3545;
+}
+
+/* עדכון למצב כהה */
+body.dark-mode #progress-bar {
+  background-color: rgba(51, 51, 51, 0.9);
+}
+
+body.dark-mode .progress-dot {
+  background-color: #555;
+}
+
+@keyframes dotPulse {
+  0% {
+    transform: scale(1.4);
+  }
+  50% {
+    transform: scale(1.6);
+  }
+  100% {
+    transform: scale(1.4);
+  }
+}
+
+/* הגדרות ספציפיות למצב כהה עבור נקודות ההתקדמות */
+body.dark-mode .progress-dot.correct {
+  background-color: #28a745; /* שומר על הצבע הירוק המקורי */
+  opacity: 0.9; /* מוסיף קצת שקיפות לשילוב טוב יותר עם הרקע הכהה */
+}
+
+body.dark-mode .progress-dot.wrong {
+  background-color: #dc3545; /* שומר על הצבע האדום המקורי */
+  opacity: 0.9; /* מוסיף קצת שקיפות לשילוב טוב יותר עם הרקע הכהה */
+}
+
+body.dark-mode .progress-dot.current {
+  background-color: #007bff; /* שומר על הצבע הכחול המקורי */
+  opacity: 0.9; /* מוסיף קצת שקיפות לשילוב טוב יותר עם הרקע הכהה */
+}

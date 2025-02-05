@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <title>חידון על תרופות הרדמה והנשמה</title>
+    <link rel="stylesheet" href="style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Assistant:wght@200;300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <div id="dark-mode-toggle" onclick="toggleDarkMode()">
+      <span class="material-icons">dark_mode</span>
+    </div>
+    <div id="dark-mode-overlay"></div>
+
+    <div class="container" id="start-screen">
+      <div class="center-content">
+        <h1>חידון על תרופות הרדמה והנשמה</h1>
+        <button class="btn" onclick="startQuiz()">התחל את החידון</button>
+      </div>
+    </div>
+
+    <div class="container hidden" id="quiz-container">
+      <!-- אזור הטיימר -->
+      <div id="timer" class="timer hidden">
+        <span id="timer-text"></span>
+      </div>
+
+      <div id="question-container"></div>
+      <div id="answer-buttons" class="btn-container"></div>
+      <div id="explanation">
+        <p id="explanation-text"></p>
+        <button onclick="nextQuestion()">לשאלה הבאה</button>
+      </div>
+    </div>
+    <!-- אזור ציר ההתקדמות בתחתית -->
+    <div id="progress-bar">
+      <div id="progress-track"></div>
+    </div>
+
+    <div class="container hidden" id="end-screen">
+      <div class="center-content">
+        <h1>סיימת את החידון!</h1>
+        <p id="score-display"></p>
+        <button class="btn" onclick="restartQuiz()">נסה שוב</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
